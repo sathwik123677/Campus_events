@@ -2,6 +2,8 @@
 
 A complete, production-grade event management platform built with the MEAN stack (MongoDB, Express.js, Angular, Node.js).
 
+Deployed at https://campus-events-iota.vercel.app/
+
 ## Features
 
 ### User Features
