@@ -177,8 +177,3 @@ Campus-Events/
 After registration, users can have one of three roles:
 - **STUDENT**: Can browse and join events, and check-in using their personal QR code
 - **ORGANIZER**: Can create events, view registered attendees, and mark check-in attendance
-- **ADMIN**: Full access to analytics dashboard and platform overview
-
-## License
-
-MIT License
