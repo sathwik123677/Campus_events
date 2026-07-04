@@ -131,7 +131,7 @@ export default function OrganizerDashboard() {
         <div className="dashboard-header organizer-header">
           <div>
             <h1>Organizer Dashboard</h1>
-            <p>Welcome back, Host {currentUser?.name} | NIT Patna</p>
+            <p>Welcome back, Host {currentUser?.name} | {currentUser?.college || 'NIT Patna'}</p>
           </div>
           <Link to="/events/create" className="btn btn-primary btn-create">
             + Create Event

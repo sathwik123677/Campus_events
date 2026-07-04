@@ -92,7 +92,7 @@ export default function Landing() {
 
       <footer className="footer">
         <div className="container">
-          <p>&copy; 2024 CampusEvents. Built with precision for the future.</p>
+          <p>&copy; 2026 CampusEvents. Built with precision for the future.</p>
         </div>
       </footer>
     </>

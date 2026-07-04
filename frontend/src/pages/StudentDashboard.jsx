@@ -111,7 +111,7 @@ export default function StudentDashboard() {
         <div className="dashboard-header">
           <div>
             <h1>Student Dashboard</h1>
-            <p>Welcome back, {currentUser?.name} | NIT Patna</p>
+            <p>Welcome back, {currentUser?.name} | {currentUser?.college || 'NIT Patna'}</p>
           </div>
         </div>
 
