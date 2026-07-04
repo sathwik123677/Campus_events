@@ -54,12 +54,14 @@ exports.markAttendance = async (req, res) => {
     participant.status = 'ATTENDED';
     await participant.save();
 
-    event.attendanceCount += 1;
+    const actualAttendanceCount = await EventParticipant.countDocuments({ event: eventId, status: 'ATTENDED' });
+    event.attendanceCount = actualAttendanceCount;
     await event.save();
 
     req.io.to(`event-${eventId}`).emit('attendanceUpdate', {
       eventId: eventId,
-      count: event.attendanceCount,
+      count: actualAttendanceCount,
+      attendanceCount: actualAttendanceCount,
     });
 
     const populatedAttendance = await AttendanceLog.findById(attendance._id)

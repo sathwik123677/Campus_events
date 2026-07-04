@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Light Theme Variables */
+[data-theme='light'] {
+  --bg-color: #F8FAFC;
+  --section-bg: #FFFFFF;
+  --card-bg: #FFFFFF;
+  --header-bg: rgba(255, 255, 255, 0.8);
+  --border-color: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --gold: #D4AF37; /* Signature brand yellow/gold */
+}
+
+/* Dark Theme Variables */
+[data-theme='dark'] {
+  --bg-color: #0B0B0B;
+  --section-bg: #121212;
+  --card-bg: rgba(18, 18, 18, 0.6);
+  --header-bg: rgba(11, 11, 11, 0.8);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --text-primary: #EDEDED;
+  --text-secondary: #9E9E9E;
+  --gold: #D4AF37;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
+  min-height: 100vh;
+}
+
+select {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+/* Hardcoded fallback colors for option tags (Chrome/Edge CSS variable limitations) */
+[data-theme='light'] select option {
+  background-color: #FFFFFF;
+  color: #1E293B;
+}
+
+[data-theme='dark'] select option {
+  background-color: #121212;
+  color: #EDEDED;
+}
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}

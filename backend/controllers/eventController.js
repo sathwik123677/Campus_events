@@ -100,6 +100,12 @@ exports.getEventById = async (req, res) => {
       return res.status(404).json({ message: 'Event not found' });
     }
 
+    const actualParticipantCount = await EventParticipant.countDocuments({ event: event._id });
+    if (event.participantCount !== actualParticipantCount) {
+      event.participantCount = actualParticipantCount;
+      await event.save();
+    }
+
     let isParticipant = false;
     if (req.user) {
       const participant = await EventParticipant.findOne({
@@ -109,7 +115,7 @@ exports.getEventById = async (req, res) => {
       isParticipant = !!participant;
     }
 
-    res.json({ ...event.toObject(), isParticipant });
+    res.json({ ...event.toObject(), isParticipant, participantCount: actualParticipantCount });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -204,12 +210,13 @@ exports.joinEvent = async (req, res) => {
       user: req.user._id,
     });
 
-    event.participantCount += 1;
+    const actualParticipantCount = await EventParticipant.countDocuments({ event: event._id });
+    event.participantCount = actualParticipantCount;
     await event.save();
 
     req.io.to(`event-${event._id}`).emit('participantCountUpdate', {
       eventId: event._id,
-      count: event.participantCount,
+      count: actualParticipantCount,
     });
 
     res.status(201).json(participant);
@@ -233,12 +240,13 @@ exports.leaveEvent = async (req, res) => {
 
     const event = await Event.findById(req.params.id);
     if (event) {
-      event.participantCount = Math.max(0, event.participantCount - 1);
+      const actualParticipantCount = await EventParticipant.countDocuments({ event: event._id });
+      event.participantCount = actualParticipantCount;
       await event.save();
 
       req.io.to(`event-${event._id}`).emit('participantCountUpdate', {
         eventId: event._id,
-        count: event.participantCount,
+        count: actualParticipantCount,
       });
     }
 
@@ -304,7 +312,18 @@ exports.getOrganizedEvents = async (req, res) => {
       date: -1,
     });
 
-    res.json(events);
+    const syncedEvents = await Promise.all(
+      events.map(async (event) => {
+        const actualCount = await EventParticipant.countDocuments({ event: event._id });
+        if (event.participantCount !== actualCount) {
+          event.participantCount = actualCount;
+          await event.save();
+        }
+        return event.toObject();
+      })
+    );
+
+    res.json(syncedEvents);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

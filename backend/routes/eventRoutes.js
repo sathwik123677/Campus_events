@@ -12,7 +12,7 @@ const {
   getMyEvents,
   getOrganizedEvents,
 } = require('../controllers/eventController');
-const { protect, authorize } = require('../middleware/auth');
+const { protect, optionalProtect, authorize } = require('../middleware/auth');
 
 router
   .route('/')
@@ -24,7 +24,7 @@ router.get('/organized', protect, authorize('ORGANIZER', 'ADMIN'), getOrganizedE
 
 router
   .route('/:id')
-  .get(protect, getEventById)
+  .get(optionalProtect, getEventById)
   .put(protect, authorize('ORGANIZER', 'ADMIN'), updateEvent)
   .delete(protect, authorize('ORGANIZER', 'ADMIN'), deleteEvent);
 
