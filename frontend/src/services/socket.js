@@ -5,7 +5,7 @@ let socket = null;
 export const socketService = {
   connect: () => {
     if (!socket) {
-      socket = io('http://127.0.0.1:3000');
+      socket = io(import.meta.env.VITE_SOCKET_URL || 'http://127.0.0.1:3000');
     }
     return socket;
   },
