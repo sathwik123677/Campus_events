@@ -38,8 +38,8 @@ export default function Header() {
     <header className="header">
       <div className="container">
         <div className="header-content">
-          <Link to="/" className="logo">
-            <span className="logo-icon">✨</span>
+          <Link to="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+            <img src="/logo.png" alt="CampusEvents Logo" style={{ height: '32px', width: '32px', borderRadius: '6px', objectFit: 'cover' }} />
             <span className="logo-text">CampusEvents</span>
           </Link>
 
