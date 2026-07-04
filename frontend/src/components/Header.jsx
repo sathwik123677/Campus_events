@@ -21,6 +21,15 @@ export default function Header() {
     return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
   };
 
+  const formatName = (str) => {
+    if (!str) return '';
+    return str.split(' ').map(word => {
+      if (word.toLowerCase() === 'nit') return 'NIT';
+      if (word.toLowerCase() === 'iit') return 'IIT';
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }).join(' ');
+  };
+
   const isDefaultAvatar = (url) => {
     return !url || url.includes('via.placeholder.com');
   };
@@ -68,7 +77,7 @@ export default function Header() {
                     ) : (
                       <img src={currentUser.avatar} alt="Avatar" className="avatar" />
                     )}
-                    <span className="user-name">{currentUser.name}</span>
+                    <span className="user-name">{formatName(currentUser.name)}</span>
                   </div>
                   <button onClick={handleLogout} className="btn-logout">Logout</button>
                 </div>

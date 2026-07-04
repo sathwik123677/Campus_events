@@ -64,6 +64,15 @@ export default function StudentDashboard() {
     });
   };
 
+  const formatName = (str) => {
+    if (!str) return '';
+    return str.split(' ').map(word => {
+      if (word.toLowerCase() === 'nit') return 'NIT';
+      if (word.toLowerCase() === 'iit') return 'IIT';
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }).join(' ');
+  };
+
   const handleSaveName = async (e) => {
     e.preventDefault();
     if (!nameInput.trim()) {
@@ -111,7 +120,7 @@ export default function StudentDashboard() {
         <div className="dashboard-header">
           <div>
             <h1>Student Dashboard</h1>
-            <p>Welcome back, {currentUser?.name} | {currentUser?.college || 'NIT Patna'}</p>
+            <p>Welcome back, {formatName(currentUser?.name)} | {formatName(currentUser?.college) || 'NIT Patna'}</p>
           </div>
         </div>
 
