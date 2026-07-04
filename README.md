@@ -1,6 +1,6 @@
 # Campus Event Management System
 
-A complete, production-grade event management platform built with the MEAN stack (MongoDB, Express.js, Angular, Node.js).
+A complete, production-grade event management platform built with the MERN stack (MongoDB, Express.js, React, Node.js).
 
 ## Features
 
@@ -10,11 +10,12 @@ A complete, production-grade event management platform built with the MEAN stack
 - **Event Registration**: Join/leave events with real-time participant count updates
 - **QR Code Attendance**: Unique QR codes for each event for instant attendance tracking
 - **Personal Dashboard**: View registered events and attendance history
+- **Profile Settings**: Quick and easy profile edit settings tab to change/update Full Name instantly
 
 ### Organizer Features
-- **Event Management**: Create, edit, and delete events
+- **Event Creation & Management**: Create events with Title, Description, Date, Times, Location, Category, Capacity, Banner, and **Last Date of Registering** (Registration Deadline)
 - **Participant Tracking**: View all registered participants
-- **Attendance Management**: Scan QR codes to mark attendance
+- **Attendance Management**: Scan QR codes or check-in students manually to mark attendance
 - **Event Analytics**: Track participant and attendance metrics
 
 ### Admin Features
@@ -25,7 +26,11 @@ A complete, production-grade event management platform built with the MEAN stack
 
 ### UI/UX Features
 - **Dark/Light Theme**: Smooth animated theme toggle with localStorage persistence
+  - *Dark Mode* (default): Deep black backgrounds with premium gold accents
+  - *Light Mode*: Cool-toned Slate background with elegant gold branding and clean layouts
 - **Animated Particle Background**: Premium Three.js particle effects with mouse parallax
+  - Cool-toned stardust floating gold and silver particles in Light Mode
+  - Additive glowing golden stardust in Dark Mode
 - **Responsive Design**: Perfect experience on mobile, tablet, and desktop
 - **Real-time Updates**: Live participant counts and attendance updates via Socket.io
 - **Glassmorphism Design**: Modern, premium UI with gold accents
@@ -38,14 +43,14 @@ A complete, production-grade event management platform built with the MEAN stack
 - JWT Authentication
 - Socket.io for real-time features
 - QR Code generation
-- Rate limiting and security middleware
+- Environment-aware rate limiting (relaxed limit of 10,000 requests locally in development, secure limit of 100 in production)
 
 ### Frontend
-- Angular 21 (Standalone Components)
-- RxJS for reactive programming
-- Three.js for particle animations
+- React (Vite-powered environment)
+- React Router DOM for routing
+- React Context API for State & Theme Management
+- Three.js for 3D particle animations
 - Socket.io-client for real-time updates
-- TypeScript
 
 ## Prerequisites
 
@@ -66,19 +71,14 @@ npm install
 
 Make sure MongoDB is running on your system:
 ```bash
-# For macOS
-brew services start mongodb-community
-
-# For Linux
-sudo systemctl start mongod
-
 # For Windows
-# Start MongoDB service from Services panel
+# Start MongoDB service from Services panel or command line:
+net start MongoDB
 ```
 
 3. **Configure environment variables**
 
-The `.env` file is already set up with default values. Update if needed:
+Create a `.env` file in the root directory:
 ```env
 MONGODB_URI=mongodb://localhost:27017/campus-event-management
 JWT_SECRET=your-secret-key-change-in-production
@@ -97,9 +97,9 @@ The backend will run on `http://localhost:3000`
 
 ### Start Frontend (in a new terminal)
 ```bash
-npm start
+npm start --prefix frontend
 ```
-The frontend will run on `http://localhost:4200`
+The frontend will run on `http://localhost:5173`
 
 ### Run Both Concurrently
 ```bash
@@ -112,12 +112,12 @@ npm run dev
 npm run build
 ```
 
-Build output will be in the `dist/` directory.
+The React production bundle will be built in the `frontend/dist/` directory.
 
 ## Project Structure
 
 ```
-campus-event-management/
+Campus-Events/
 ├── backend/
 │   ├── config/          # Database configuration
 │   ├── models/          # Mongoose models
@@ -126,17 +126,18 @@ campus-event-management/
 │   ├── middleware/      # Custom middleware
 │   ├── utils/           # Utility functions
 │   └── server.js        # Express server entry point
-├── src/
-│   ├── app/
-│   │   ├── components/  # Reusable components
-│   │   ├── pages/       # Page components
-│   │   ├── services/    # Angular services
-│   │   ├── guards/      # Route guards
-│   │   ├── app.component.ts
-│   │   └── app.routes.ts
-│   ├── global_styles.css
-│   ├── index.html
-│   └── main.ts
+├── frontend/
+│   ├── public/          # Static assets
+│   ├── src/
+│   │   ├── assets/      # Local images & assets
+│   │   ├── components/  # Reusable React components (Header, ParticleBackground, etc.)
+│   │   ├── context/     # AuthContext and ThemeContext
+│   │   ├── pages/       # Page components (Dashboards, EventDetails, Auth, CreateEvent, etc.)
+│   │   ├── services/    # api.js and socket.js API service wrappers
+│   │   ├── App.jsx      # Root routing component
+│   │   ├── index.css    # Global stylesheet and theme tokens
+│   │   └── main.jsx     # Vite entry point
+│   └── vite.config.js   # Vite configuration
 └── package.json
 ```
 
@@ -145,8 +146,8 @@ campus-event-management/
 ### Authentication
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - Login user
-- `GET /api/auth/me` - Get current user
-- `PUT /api/auth/profile` - Update profile
+- `GET /api/auth/me` - Get current user info
+- `PUT /api/auth/profile` - Update user name/profile details
 
 ### Events
 - `GET /api/events` - Get all events (with filters)
@@ -174,45 +175,9 @@ campus-event-management/
 ## Default User Roles
 
 After registration, users can have one of three roles:
-- **STUDENT**: Can browse and join events
-- **ORGANIZER**: Can create and manage events
-- **ADMIN**: Full access to analytics and platform management
-
-## Theme System
-
-The application supports both dark and light themes:
-- **Dark Mode** (default): Deep black backgrounds with gold accents
-- **Light Mode**: Clean white backgrounds with gold accents
-
-Theme preference is saved in localStorage and persists across sessions.
-
-## Real-time Features
-
-Socket.io provides real-time updates for:
-- Live participant count updates when users join/leave events
-- Real-time attendance count updates
-- Instant dashboard metric updates for admins
-
-## Security Features
-
-- JWT-based authentication
-- Password hashing with bcrypt
-- Role-based authorization
-- Rate limiting on API endpoints
-- Input validation
-- Protected routes
-- Secure HTTP headers
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-
-## Contributing
-
-This is a demonstration project built to showcase full-stack development capabilities.
+- **STUDENT**: Can browse and join events, and check-in using their personal QR code
+- **ORGANIZER**: Can create events, view registered attendees, and mark check-in attendance
+- **ADMIN**: Full access to analytics dashboard and platform overview
 
 ## License
 
