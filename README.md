@@ -2,6 +2,11 @@
 
 A complete, production-grade event management platform built with the MERN stack (MongoDB, Express.js, React, Node.js).
 
+## Live Deployments
+
+- **Frontend**: [https://campus-events-mu.vercel.app](https://campus-events-mu.vercel.app)
+- **Backend API**: [https://campus-events-backend-ie78.onrender.com](https://campus-events-backend-ie78.onrender.com)
+
 ## Features
 
 ### User Features
